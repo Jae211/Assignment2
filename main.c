@@ -3,6 +3,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <time.h>
+#include <stdlib.h>
 
 struct stat stat1, stat2;
 struct tm *time1, *time2;
@@ -43,13 +44,15 @@ void filestat2()
 //파일 1의 시간 정보를 가져오는 함수 작성
 void filetime1()
 {
-    time1 = localtime(&stat1.st_mtime);
+    time1 = malloc(sizeof(struct tm));
+    time1 = localtime_r(&stat1.st_mtime, time1);
 }
 
 //파일 2의 시간 정보를 가져오는 함수 작성
 void filetime2()
 {
-    time2 = localtime(&stat2.st_mtime);
+    time2 = malloc(sizeof(struct tm));
+    time2 = localtime_r(&stat2.st_mtime, time2);
 }
 
 //두 개의 파일 크기를 비교하는 함수 작성
@@ -102,15 +105,15 @@ void timecmp()
 {
     printf("time compare\n");
     if (time1->tm_hour < time2->tm_hour)
-        printf("text1 is early\n\n");
+        printf("text1 is early\n");
     else if (time1->tm_hour > time2->tm_hour)
-        printf("text2 is early\n\n");
+        printf("text2 is early\n");
     else
     {
         if (time1->tm_min < time2->tm_min)
-            printf("text1 is early\n\n");
+            printf("text1 is early\n");
         else if (time1->tm_min > time2->tm_min)
-            printf("text2 is early\n\n");
+            printf("text2 is early\n");
         else
         {
             printf("same time\n");
